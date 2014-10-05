@@ -1,0 +1,2 @@
+# Vagrant Salt Tester
+

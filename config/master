@@ -1,0 +1,13 @@
+# Enable a hierarchy of environments.
+file_roots:
+  base:
+    - /srv/salt/
+  prod:
+    - /srv/salt/prod
+  qa:
+    - /srv/salt/qa
+    - /srv/salt/prod
+  dev:
+    - /srv/salt/dev
+    - /srv/salt/qa
+    - /srv/salt/prod
