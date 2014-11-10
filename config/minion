@@ -1,21 +1,15 @@
-# /etc/salt/master
+# /etc/salt/minion
 
 # ==============================================================================
-# 22.8.5 MASTER FILE SERVER SETTINGS
+# 22.9.1. MINION PRIMARY CONFIGURATION
 # ==============================================================================
 
-fileserver_backend:
-  - roots # configured by file_roots
-  - git # list in gitfs_remotes
-
-file_roots:
-  base:
-    - /srv/salt
-
-# gitfs_remotes:
-#   - https://github.com/saltstack-formulas/saltstack-formula.git
+master: 10.0.2.2
+id: minion
 
 # ==============================================================================
-# 22.8.6 PILLAR CONFIGURATION
+# 22.9.4 FILE DIRECTORY SETTINGS
 # ==============================================================================
+
+file_client: remote
 

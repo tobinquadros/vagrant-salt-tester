@@ -1,17 +1,26 @@
-# This file is configured for a masterless minion only.
-file_client: local
-master: localhost
+# /etc/salt/minion (masterless-minion)
+#
+# This file is configured for a masterless minion.
 
-# Enable a hierarchy of environments.
+# ==============================================================================
+# 22.9.1. MINION PRIMARY CONFIGURATION
+# ==============================================================================
+
+master: localhost
+id: masterless
+
+# ==============================================================================
+# 22.9.4 FILE DIRECTORY SETTINGS
+# ==============================================================================
+
+file_client: local
+
 file_roots:
   base:
-    - /srv/salt/
-  prod:
-    - /srv/salt/prod
-  qa:
-    - /srv/salt/qa
-    - /srv/salt/prod
-  dev:
-    - /srv/salt/dev
-    - /srv/salt/qa
-    - /srv/salt/prod
+    - /srv/salt
+    - /srv/formulas/openssh-formula # TEST ONLY
+
+pillar_roots:
+  base:
+    - /srv/pillar
+

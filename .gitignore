@@ -1,3 +1,4 @@
 # Vagrant-Salt-Tester .gitignore
 
 .vagrant
+formulas/
