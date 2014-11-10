@@ -1,0 +1,21 @@
+# /etc/salt/master
+
+# ==============================================================================
+# 22.8.5 MASTER FILE SERVER SETTINGS
+# ==============================================================================
+
+fileserver_backend:
+  - roots # configured by file_roots
+  - git # list in gitfs_remotes
+
+file_roots:
+  base:
+    - /srv/salt
+
+# gitfs_remotes:
+#   - https://github.com/saltstack-formulas/saltstack-formula.git
+
+# ==============================================================================
+# 22.8.6 PILLAR CONFIGURATION
+# ==============================================================================
+

@@ -25,7 +25,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     masterless.vm.box = $base_box
     # SYNCED FOLDERS
     # Add shared folders: "host_source_dir", "target_vm_dir", options
-    masterless.vm.synced_folder "salt/file_roots/", "/srv/salt/", create: true
+    masterless.vm.synced_folder "file_roots/salt/", "/srv/salt/", create: true
+    masterless.vm.synced_folder "file_roots/formulas/", "/srv/formulas/", create: true
+    masterless.vm.synced_folder "pillar_roots/", "/srv/pillar/", create: true
     # NETWORK
     masterless.vm.network "private_network", ip: "192.168.10.10"
     masterless.vm.host_name = "masterless"
@@ -40,7 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     # PROVISION
     masterless.vm.provision :salt do |salt|
-      salt.minion_config = "salt/masterless-minion"
+      salt.minion_config = "config/masterless-minion"
       salt.run_highstate = true
     end
   end
@@ -50,7 +52,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # node, and also to send it other vagrant commands.
   config.vm.define "master", autostart: false do |master|
     master.vm.box = $base_box
-    master.vm.synced_folder "salt/file_roots/", "/srv/salt/", create: true
+    master.vm.synced_folder "file_roots/salt/", "/srv/salt/", create: true
+    master.vm.synced_folder "file_roots/formulas/", "/srv/formulas/", create: true
+    master.vm.synced_folder "pillar_roots/", "/srv/pillar/", create: true
     master.vm.network "private_network", ip: "192.168.10.11"
     master.vm.host_name = "salt"
     master.vm.provider :virtualbox do |vb|
@@ -61,12 +65,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     master.vm.provision :salt do |salt|
       salt.install_master = true
       salt.no_minion = true
-      salt.master_config = "salt/master"
-      salt.master_key = "salt/key/master.pem"
-      salt.master_pub = "salt/key/master.pub"
+      salt.master_config = "config/master"
+      salt.master_key = "key/master.pem"
+      salt.master_pub = "key/master.pub"
       salt.seed_master = {
-        minion: "salt/key/minion.pub",
-        master: "salt/key/master.pub",
+        minion: "key/minion.pub",
+        master: "key/master.pub",
       }
     end
   end
@@ -85,9 +89,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     minion.vm.provision :salt do |salt|
       # The salt-master has to accept these keys, or preseed them.
-      salt.minion_config = "salt/minion"
-      salt.minion_key = "salt/key/minion.pem"
-      salt.minion_pub = "salt/key/minion.pub"
+      salt.minion_config = "config/minion"
+      salt.minion_key = "key/minion.pem"
+      salt.minion_pub = "key/minion.pub"
       salt.run_highstate = true
     end
   end

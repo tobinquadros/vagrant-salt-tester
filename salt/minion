@@ -1,4 +1,0 @@
-# Configure the minion
-master: 10.0.2.2
-id: minion
-file_client: remote
