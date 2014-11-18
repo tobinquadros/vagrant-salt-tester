@@ -25,9 +25,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     masterless.vm.box = $base_box
     # SYNCED FOLDERS
     # Add shared folders: "host_source_dir", "target_vm_dir", options
-    masterless.vm.synced_folder "file_roots/salt/", "/srv/salt/", create: true
-    masterless.vm.synced_folder "file_roots/formulas/", "/srv/formulas/", create: true
-    masterless.vm.synced_folder "pillar_roots/", "/srv/pillar/", create: true
+    masterless.vm.synced_folder "/srv/salt/", "/srv/salt/",
+      create: true, :mount_options => ["ro"], owner: "root", group: "root"
+    masterless.vm.synced_folder "/srv/formulas/", "/srv/formulas/",
+      create: true, :mount_options => ["ro"], owner: "root", group: "root"
+    masterless.vm.synced_folder "/srv/pillar/", "/srv/pillar/",
+      create: true, :mount_options => ["ro"], owner: "root", group: "root"
     # NETWORK
     masterless.vm.network "private_network", ip: "192.168.10.10"
     masterless.vm.host_name = "masterless"
@@ -47,14 +50,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  # SALT-MASTER SETUP
+  # MASTER SETUP
   # Create Salt-Master node. You must call 'vagrant up master' to start this
   # node, and also to send it other vagrant commands.
   config.vm.define "master", autostart: false do |master|
     master.vm.box = $base_box
-    master.vm.synced_folder "file_roots/salt/", "/srv/salt/", create: true
-    master.vm.synced_folder "file_roots/formulas/", "/srv/formulas/", create: true
-    master.vm.synced_folder "pillar_roots/", "/srv/pillar/", create: true
+    master.vm.synced_folder "/srv/salt/", "/srv/salt/",
+      create: true, :mount_options => ["ro"], owner: "root", group: "root"
+    master.vm.synced_folder "/srv/formulas/", "/srv/formulas/",
+      create: true, :mount_options => ["ro"], owner: "root", group: "root"
+    master.vm.synced_folder "/srv/pillar/", "/srv/pillar/",
+      create: true, :mount_options => ["ro"], owner: "root", group: "root"
     master.vm.network "private_network", ip: "192.168.10.11"
     master.vm.host_name = "salt"
     master.vm.provider :virtualbox do |vb|
@@ -75,7 +81,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  # SALT-MINION SETUP
+  # MINION SETUP
   # Create Salt-Minion node. You must call 'vagrant up minion' to start this
   # node, and also to send it other vagrant commands.
   config.vm.define "minion", autostart: false do |minion|
